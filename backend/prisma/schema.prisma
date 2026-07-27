@@ -1,0 +1,124 @@
+// Sprint 1 scope only: users, roles, master data, customers.
+// Requests/Tasks/Projects/Notes/WorkflowSteps land in later sprints (see docs/6-development/12-sprint-plan.md).
+// Schema mirrors docs/5-modules/settings-administration/4-schema.md and docs/2-database/.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RoleName {
+  Admin
+  Manager
+  Processor
+  Estimator
+  Viewer
+}
+
+model Role {
+  id    String   @id @default(uuid()) @db.Uuid
+  name  RoleName @unique
+  users User[]
+
+  @@map("roles")
+}
+
+model User {
+  id                      String    @id @default(uuid()) @db.Uuid
+  email                   String    @unique
+  passwordHash            String    @map("password_hash")
+  displayName             String    @map("display_name")
+  roleId                  String    @map("role_id") @db.Uuid
+  role                    Role      @relation(fields: [roleId], references: [id])
+  timeZone                String    @default("UTC") @map("time_zone")
+  notificationPreferences Json      @default("{}") @map("notification_preferences")
+  active                  Boolean   @default(true)
+  failedLoginAttempts     Int       @default(0) @map("failed_login_attempts")
+  lockedUntil             DateTime? @map("locked_until") @db.Timestamptz
+  createdAt               DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt               DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([email])
+  @@map("users")
+}
+
+// --- Master data (docs/5-modules/settings-administration/4-schema.md) ---
+
+model RequestType {
+  id          String  @id @default(uuid()) @db.Uuid
+  name        String  @unique
+  description String?
+  active      Boolean @default(true)
+  sortOrder   Int     @default(0) @map("sort_order")
+
+  @@map("request_types")
+}
+
+model ProjectType {
+  id          String  @id @default(uuid()) @db.Uuid
+  name        String  @unique
+  description String?
+  active      Boolean @default(true)
+  sortOrder   Int     @default(0) @map("sort_order")
+
+  @@map("project_types")
+}
+
+model Location {
+  id        String  @id @default(uuid()) @db.Uuid
+  name      String
+  state     String
+  code      String  @unique
+  active    Boolean @default(true)
+  sortOrder Int     @default(0) @map("sort_order")
+
+  @@map("locations")
+}
+
+enum StatusEntityType {
+  Task
+  Project
+  Request
+}
+
+model Status {
+  id         String           @id @default(uuid()) @db.Uuid
+  entityType StatusEntityType @map("entity_type")
+  name       String
+  color      String
+  active     Boolean          @default(true)
+  sortOrder  Int              @default(0) @map("sort_order")
+
+  @@unique([entityType, name])
+  @@index([entityType])
+  @@map("statuses")
+}
+
+model Priority {
+  id     String  @id @default(uuid()) @db.Uuid
+  name   String
+  level  Int     @unique
+  color  String
+  active Boolean @default(true)
+
+  @@map("priorities")
+}
+
+// --- Customer master (referenced by Request Intake / Projects 360, owned here) ---
+
+model Customer {
+  id                String    @id @default(uuid()) @db.Uuid
+  name              String
+  netsuiteCustomerId String?  @map("netsuite_customer_id")
+  active            Boolean   @default(true)
+  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt         DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  deletedAt         DateTime? @map("deleted_at") @db.Timestamptz
+
+  @@index([name])
+  @@map("customers")
+}

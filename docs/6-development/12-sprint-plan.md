@@ -13,8 +13,8 @@
 | Project Name | Legacy Lighting – Project Management & Project 360 Visibility Platform (MVP) |
 | Sprint Length | 1 week (Mon–Fri) |
 | Team | Dev A, Dev B (both full-stack) |
-| Version | 1.1 |
-| Status | In Progress — Sprint 1 underway |
+| Version | 1.2 |
+| Status | In Progress — Sprint 1 code substantially complete, CI/hosting pending |
 | Author | Development Team (NuVista AI) |
 | Last Updated | 2026-07-27 |
 
@@ -53,26 +53,34 @@ cross-module work dominates.
 - [ ] Render + Vercel projects (staging environments) — not started
 - [x] Local environment verified: Node v24.18.0, npm 11.16.0, Git 2.37.2, PostgreSQL 18.4
   (native, no Docker) — all satisfy documented minimums
-- [x] Local database name decided: `claude_legacy_lighting` (auto-creates on first
-  `prisma migrate dev` — not created yet, no backend code exists to run it)
+- [x] Local database name decided: `claude_legacy_lighting`, created and migrated (Postgres
+  auth reset from unknown to a known local password mid-sprint — see `1-development-environment.md`)
 - [x] Finalize `docs/2-database/1-database-design.md` and `2-erd.md`
 
-**Remaining Sprint 1 work (M1 close-out + M2 start, Dev A/Dev B split below unchanged):**
+### Dev A (M2 start, ~20h) — done
+- [x] Backend skeleton: Express app, Prisma init, folder structure per `2-folder-structure.md`
+- [x] `users`, `roles` migrations + role seed
+- [x] Auth service: login, JWT issuance, bcrypt hashing, account lockout (5 attempts/15 min)
+- [x] Verified end-to-end: migration applied, seed run, login round-trip tested via curl
+  (success, bad-password rejection, CORS from `localhost:5173`)
 
-### Dev A (M2 start, ~20h)
-- Backend skeleton: Express app, Prisma init, folder structure per `2-folder-structure.md`
-- `users`, `roles` migrations + role seed (per `settings-administration/10-implementation-plan.md` Phase 1)
-- Auth service: login, JWT issuance, bcrypt hashing (`docs/3-api/2-authentication.md`)
+### Dev B (M2 start, ~20h) — done
+- [x] Frontend skeleton: Vite + React + Tailwind v4, routing (React Router), TanStack Query
+- [x] Master-data migrations: `request_types`, `project_types`, `locations` (with `state`
+  column), `statuses`, `priorities` + seed data (Request/Project Types confirmed; Locations
+  table created but left empty — Q-005b still open)
+- [x] `customers` migration
+- [x] Login page wired to the real backend; protected routing; sidebar layout matching
+  confirmed Lovable UI naming (Estimator Workbench, All Projects, etc.); placeholder pages for
+  the other 5 modules
 
-### Dev B (M2 start, ~20h)
-- Frontend skeleton: Vite + React + Tailwind/shadcn setup, routing, layout shell
-- Master-data migrations: `request_types`, `project_types`, `locations` (with `state` column),
-  `statuses`, `priorities` + seed data (Request/Project Types confirmed; Locations from M1
-  discovery)
-- `customers` migration
+**Not done this sprint:** CI workflows, Render/Vercel provisioning, actual browser screenshot
+of the running app (`chromium-cli` unavailable in this environment — verified via `tsc`,
+`curl`, and CORS checks instead).
 
-**Sprint 1 exit check:** repo/CI live; local dev environments working for both developers;
-auth backend returns a JWT for a seeded user; master data tables exist and are seeded.
+**Sprint 1 exit check:** repo live (CI still pending); local dev environments working for both
+developers; auth backend returns a JWT for a seeded user — **met**; master data tables exist
+and are seeded — **met**.
 
 ---
 
@@ -205,3 +213,4 @@ criteria in `11-milestone-plan.md` Section 6 met.
 |---------|------|--------|-------------|
 | 1.0 | 2026-07-27 | Development Team (NuVista AI) | Initial draft, module-ownership split across 2 developers |
 | 1.1 | 2026-07-27 | Development Team (NuVista AI) | Marked Sprint 1 actuals: repo pushed, tech stack signed off, env verified, DB name decided; Q-005b/CI/hosting still open |
+| 1.2 | 2026-07-27 | Development Team (NuVista AI) | Sprint 1 Dev A/Dev B tasks completed and verified: backend auth (login/JWT/lockout), DB migrated+seeded, frontend skeleton wired to real API |

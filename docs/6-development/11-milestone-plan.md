@@ -54,10 +54,12 @@ Completed so far, ahead of/within M1:
 - [x] Real Lovable UI screenshots reviewed and reconciled into the specs (`lovable-screen/`)
 - [x] Local dev environment verified: Node v24.18.0, npm 11.16.0, Git 2.37.2, PostgreSQL 18.4
   running natively (no Docker) — all satisfy documented minimums
-- [x] Local database name decided: `claude_legacy_lighting` (not yet created — auto-creates on
-  first `prisma migrate dev`, no code exists to run yet)
-- [x] Git repository initialized, remote added, initial commit pushed to
+- [x] Local database `claude_legacy_lighting` created, migrated, seeded
+- [x] Git repository initialized, remote added, pushed to
   `https://github.com/parimal-c-crest/Legacy-Lighting.git` (branch `master`)
+- [x] Backend skeleton (Express + Prisma) with working login/JWT/RBAC — verified end-to-end
+- [x] Frontend skeleton (Vite + React + Tailwind) with routing and real login page — this was
+  M2 scope, done ahead of schedule during Sprint 1
 
 **Caveat:** the confirmations above (tech stack, Q-001–Q-004, Q-005a) were made by the project
 owner directly, standing in for the discovery sessions this milestone calls for — they have
@@ -72,7 +74,6 @@ Still open / not started:
 - [ ] CI pipeline (GitHub Actions workflows) — repo exists, no workflow files yet
 - [ ] Render/Vercel projects provisioned
 - [ ] NetSuite sandbox / OneDrive-Graph credentials obtained
-- [ ] Backend/frontend application skeleton (no code written yet — `backend/`, `frontend/` don't exist)
 
 ---
 

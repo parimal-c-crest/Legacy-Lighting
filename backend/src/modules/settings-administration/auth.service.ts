@@ -12,14 +12,18 @@ export class InvalidCredentialsError extends Error {}
 export class AccountLockedError extends Error {}
 export class AccountInactiveError extends Error {}
 
+// Fixed dummy hash so a lookup on a non-existent email still pays bcrypt's cost — keeps
+// response time (and thus which branch was taken) indistinguishable from a real user with a
+// wrong password. Prevents account enumeration via timing or response shape. Generated once at
+// module load (not hardcoded) so it's guaranteed to be a valid bcrypt hash.
+const DUMMY_HASH = bcrypt.hashSync("dummy-password-for-timing-safety", 10);
+
 export async function login(email: string, password: string) {
   const user = await prisma.user.findUnique({ where: { email }, include: { role: true } });
-  if (!user) {
-    throw new InvalidCredentialsError();
-  }
 
-  if (!user.active) {
-    throw new AccountInactiveError();
+  if (!user) {
+    await bcrypt.compare(password, DUMMY_HASH);
+    throw new InvalidCredentialsError();
   }
 
   if (user.lockedUntil && user.lockedUntil > new Date()) {
@@ -27,6 +31,14 @@ export async function login(email: string, password: string) {
   }
 
   const passwordMatches = await bcrypt.compare(password, user.passwordHash);
+
+  // Checked after the password compare (not before) so a wrong-password attempt against an
+  // inactive account still pays the same bcrypt cost as an active one, and so we don't leak
+  // "this account exists but is inactive" to someone who doesn't know the password.
+  if (!user.active) {
+    throw passwordMatches ? new AccountInactiveError() : new InvalidCredentialsError();
+  }
+
   if (!passwordMatches) {
     const failedLoginAttempts = user.failedLoginAttempts + 1;
     const shouldLock = failedLoginAttempts >= MAX_FAILED_ATTEMPTS;

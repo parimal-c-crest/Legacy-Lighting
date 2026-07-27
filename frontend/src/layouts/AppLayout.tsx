@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { getStoredUser, logout } from "../api/auth";
+import { useCurrentUser, useLogout } from "../api/auth";
 
 // Nav labels match the live Lovable UI screen titles — see docs/4-ui/1-navigation.md
 const navItems = [
@@ -12,7 +12,8 @@ const navItems = [
 ];
 
 export default function AppLayout() {
-  const user = getStoredUser();
+  const { data: user } = useCurrentUser();
+  const logout = useLogout();
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -39,12 +40,15 @@ export default function AppLayout() {
         </nav>
         {user && (
           <div className="border-t border-gray-200 p-4 text-xs text-gray-500">
-            <p className="font-medium text-gray-900">{user.displayName}</p>
+            <p className="font-medium text-gray-900">{user.email}</p>
             <p>{user.role}</p>
             <button
               onClick={() => {
-                logout();
-                window.location.href = "/login";
+                logout.mutate(undefined, {
+                  onSuccess: () => {
+                    window.location.href = "/login";
+                  },
+                });
               }}
               className="mt-2 text-gray-500 underline"
             >

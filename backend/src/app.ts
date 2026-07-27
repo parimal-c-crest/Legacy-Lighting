@@ -1,5 +1,7 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
+import helmet from "helmet";
 import morgan from "morgan";
 import { apiRouter } from "./routes";
 import { failure } from "./shared/response";
@@ -8,8 +10,17 @@ import { logger } from "./shared/logger";
 export function createApp() {
   const app = express();
 
-  app.use(cors({ origin: process.env.CORS_ORIGIN ?? "http://localhost:5173" }));
+  app.use(helmet());
+  // credentials:true + a specific (non-wildcard) origin — required for the httpOnly auth
+  // cookie to actually be sent/accepted cross-origin between the Vite dev server and this API.
+  app.use(
+    cors({
+      origin: process.env.CORS_ORIGIN ?? "http://localhost:5173",
+      credentials: true,
+    })
+  );
   app.use(express.json());
+  app.use(cookieParser());
   app.use(morgan("combined", { stream: { write: (msg) => logger.info(msg.trim()) } }));
 
   app.get("/health", (_req, res) => res.json({ status: "ok" }));

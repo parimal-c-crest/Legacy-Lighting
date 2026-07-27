@@ -24,13 +24,13 @@ export class ApiRequestError extends Error {
 }
 
 export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const token = localStorage.getItem("auth_token");
-
+  // Auth token lives in an httpOnly cookie set by the backend — never read/attached from JS.
+  // credentials: "include" is what makes the browser send that cookie cross-origin to the API.
   const res = await fetch(`${API_BASE_URL}${path}`, {
     ...init,
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...init.headers,
     },
   });

@@ -13,10 +13,13 @@
 | Project Name | Legacy Lighting – Project Management & Project 360 Visibility Platform (MVP) |
 | Total Duration | 5 weeks (2026-07-27 to 2026-08-28) |
 | Total Effort | 400 hours (2 developers × 80 hrs/week × 5 weeks) |
-| Version | 1.0 |
-| Status | Draft |
+| Version | 1.1 |
+| Status | In Progress — M1 partially complete |
 | Author | Development Team (NuVista AI) |
 | Last Updated | 2026-07-27 |
+
+> **Living document.** Section 1a tracks actual completion against the plan below. Update it
+> at the end of each sprint rather than treating this file as a fixed prediction.
 
 ---
 
@@ -37,6 +40,42 @@ overlapping milestones.
 
 ---
 
+# 1a. Actual Progress (as of 2026-07-27)
+
+Completed so far, ahead of/within M1:
+
+- [x] Full documentation set written and approved (`docs/1-project` through `docs/6-development`,
+  all 6 modules) — Phase A/B of the docs-first workflow
+- [x] Tech stack confirmed: Node.js + Express + Prisma + PostgreSQL, React + Vite +
+  Tailwind/shadcn, Vercel + Render (`1-project/4-tech-stack.md`)
+- [x] Open questions resolved: Q-001 (NetSuite scope), Q-002 (KPI thresholds), Q-003
+  (notification channels), Q-004 (role list), Q-005a (Request/Project Types) — see
+  `1-project/2-requirements.md`
+- [x] Real Lovable UI screenshots reviewed and reconciled into the specs (`lovable-screen/`)
+- [x] Local dev environment verified: Node v24.18.0, npm 11.16.0, Git 2.37.2, PostgreSQL 18.4
+  running natively (no Docker) — all satisfy documented minimums
+- [x] Local database name decided: `claude_legacy_lighting` (not yet created — auto-creates on
+  first `prisma migrate dev`, no code exists to run yet)
+- [x] Git repository initialized, remote added, initial commit pushed to
+  `https://github.com/parimal-c-crest/Legacy-Lighting.git` (branch `master`)
+
+**Caveat:** the confirmations above (tech stack, Q-001–Q-004, Q-005a) were made by the project
+owner directly, standing in for the discovery sessions this milestone calls for — they have
+**not** yet been ratified by Legacy Lighting in an actual client discovery session. Treat them
+as the working baseline, but flag them for a real confirmation pass when Legacy Lighting
+engagement begins.
+
+Still open / not started:
+
+- [ ] Q-005b — Locations/office list (needs Legacy Lighting's real list, nothing invented)
+- [ ] Real discovery session(s) with Legacy Lighting to ratify the above
+- [ ] CI pipeline (GitHub Actions workflows) — repo exists, no workflow files yet
+- [ ] Render/Vercel projects provisioned
+- [ ] NetSuite sandbox / OneDrive-Graph credentials obtained
+- [ ] Backend/frontend application skeleton (no code written yet — `backend/`, `frontend/` don't exist)
+
+---
+
 # 2. M1 — Discovery, Workflow & Technical Setup
 
 **Dates:** 2026-07-27 to 2026-07-31 (Week 1) · **Hours:** 40
@@ -45,24 +84,27 @@ overlapping milestones.
 for discovery sessions.
 
 **Focus:**
-- Confirm MVP workflows, Lovable screens, and functional boundaries
-- Finalize project/task statuses, structured fields, and permissions matrix
-- Confirm NetSuite objects/fields and review OneDrive structure with Legacy Lighting
-- Finalize data model and integration approach
-- Sign off on the proposed tech stack (`1-project/4-tech-stack.md`)
-- Resolve remaining open questions: **Q-005b (Locations/office list)** — the only item still
-  genuinely open per `1-project/2-requirements.md`
+- [x] Confirm MVP workflows, Lovable screens, and functional boundaries (working baseline —
+  see caveat in Section 1a)
+- [x] Finalize project/task statuses, structured fields, and permissions matrix
+- [x] Confirm NetSuite objects/fields and review OneDrive structure (working baseline)
+- [x] Finalize data model and integration approach (`docs/2-database/`, `docs/3-api/`)
+- [x] Sign off on the proposed tech stack (`1-project/4-tech-stack.md`)
+- [ ] Resolve remaining open question: **Q-005b (Locations/office list)** — still genuinely
+  open, needs real Legacy Lighting input
 
 **Deliverables:**
-- Approved MVP scope (this docs set, ratified)
-- Finalized workflows and role matrix
-- Finalized data model (`docs/2-database/`)
-- Integration mapping (`docs/3-api/`, module `8-api.md` files)
-- Prioritized development backlog (`12-sprint-plan.md`)
-- Repository created, CI pipeline skeleton in place
+- [x] Approved MVP scope (this docs set, ratified)
+- [x] Finalized workflows and role matrix
+- [x] Finalized data model (`docs/2-database/`)
+- [x] Integration mapping (`docs/3-api/`, module `8-api.md` files)
+- [x] Prioritized development backlog (`12-sprint-plan.md`)
+- [x] Repository created and pushed (`https://github.com/parimal-c-crest/Legacy-Lighting.git`)
+- [ ] CI pipeline skeleton in place (repo exists; GitHub Actions workflows not yet written)
 
-**Exit criteria:** Q-005b resolved; tech stack signed off; repository and CI exist;
-Milestone 2 can start without blocking on data-model questions.
+**Exit criteria:** Q-005b resolved; CI pipeline exists; real Legacy Lighting discovery
+session(s) held to ratify the working-baseline decisions. Milestone 2 code work can start in
+parallel with these remaining items since they don't block the data model.
 
 ---
 
@@ -179,3 +221,4 @@ reason).
 | Version | Date | Author | Description |
 |---------|------|--------|-------------|
 | 1.0 | 2026-07-27 | Development Team (NuVista AI) | Initial draft, calendar-dated from 2026-07-27 kickoff |
+| 1.1 | 2026-07-27 | Development Team (NuVista AI) | Added actual-progress tracking (Section 1a); marked M1 items complete/open against real work done |

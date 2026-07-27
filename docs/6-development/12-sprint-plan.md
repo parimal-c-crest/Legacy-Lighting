@@ -13,8 +13,8 @@
 | Project Name | Legacy Lighting – Project Management & Project 360 Visibility Platform (MVP) |
 | Sprint Length | 1 week (Mon–Fri) |
 | Team | Dev A, Dev B (both full-stack) |
-| Version | 1.0 |
-| Status | Draft |
+| Version | 1.1 |
+| Status | In Progress — Sprint 1 underway |
 | Author | Development Team (NuVista AI) |
 | Last Updated | 2026-07-27 |
 
@@ -39,14 +39,25 @@ cross-module work dominates.
 
 **Milestones covered:** M1 (full, 40h) + M2 start (40h) — 80h total
 
+**Actuals as of 2026-07-27 (Day 1):**
+
 ### Both developers (M1, 40h combined)
-- Discovery sessions with Legacy Lighting: confirm workflows, statuses, roles, NetSuite
-  objects, OneDrive structure
-- Resolve Q-005b (Locations/office list) with Legacy Lighting
-- Sign off tech stack (`1-project/4-tech-stack.md`): Express, Prisma, React+Vite, Vercel+Render
-- Set up repository (`legacy-lighting-p360`), GitHub Actions CI skeleton, Render + Vercel
-  projects (staging environments)
-- Finalize `docs/2-database/1-database-design.md` and `2-erd.md` against discovery outcomes
+- [x] Docs-first discovery equivalent: workflows, statuses, roles, NetSuite objects, OneDrive
+  structure worked through and written into `docs/` (working baseline — pending ratification in
+  a real Legacy Lighting discovery session, see `11-milestone-plan.md` Section 1a)
+- [ ] Resolve Q-005b (Locations/office list) with Legacy Lighting — **still open**
+- [x] Sign off tech stack (`1-project/4-tech-stack.md`): Express, Prisma, React+Vite, Vercel+Render
+- [x] Repository created and pushed:
+  `https://github.com/parimal-c-crest/Legacy-Lighting.git` (branch `master`)
+- [ ] GitHub Actions CI skeleton — not started
+- [ ] Render + Vercel projects (staging environments) — not started
+- [x] Local environment verified: Node v24.18.0, npm 11.16.0, Git 2.37.2, PostgreSQL 18.4
+  (native, no Docker) — all satisfy documented minimums
+- [x] Local database name decided: `claude_legacy_lighting` (auto-creates on first
+  `prisma migrate dev` — not created yet, no backend code exists to run it)
+- [x] Finalize `docs/2-database/1-database-design.md` and `2-erd.md`
+
+**Remaining Sprint 1 work (M1 close-out + M2 start, Dev A/Dev B split below unchanged):**
 
 ### Dev A (M2 start, ~20h)
 - Backend skeleton: Express app, Prisma init, folder structure per `2-folder-structure.md`
@@ -193,3 +204,4 @@ criteria in `11-milestone-plan.md` Section 6 met.
 | Version | Date | Author | Description |
 |---------|------|--------|-------------|
 | 1.0 | 2026-07-27 | Development Team (NuVista AI) | Initial draft, module-ownership split across 2 developers |
+| 1.1 | 2026-07-27 | Development Team (NuVista AI) | Marked Sprint 1 actuals: repo pushed, tech stack signed off, env verified, DB name decided; Q-005b/CI/hosting still open |
